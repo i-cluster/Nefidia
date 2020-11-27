@@ -4,7 +4,7 @@
       <h1>Today's Top recommendation just for you</h1>
         <!-- Youtube 링크? 영화  -->
 
-      <vueper-slides
+      <!-- <vueper-slides
         ref="myVueperSlides"
         :parallax="parallax"
         :parallax-fixed-content="parallaxFixedContent">
@@ -12,7 +12,7 @@
           v-for="(slide, i) in slides"
           :key="i"
           :image="slide.image"/>
-      </vueper-slides>
+      </vueper-slides> -->
     </div>
    
     <div id="slider">
@@ -37,45 +37,25 @@
         </div>
       </span>
     </div>
-
-    <div v-for="(code, idx) in filter_code" :key="idx">
-      <mdb-container>
-        <mdb-row>
-          <mdb-col xl="2" lg="3" md="4" sm="6" v-for="(movie, idx) in movies[code]" :key="idx">
-            <router-link :to="{ name: 'Movie', params: { movieId: movie.id } }">
-              <img :src="posterUrl(movie.poster_path)" alt="">
-            </router-link>
-            <!-- {{ movie.title }} -->
-          </mdb-col>
-        </mdb-row>
-      </mdb-container>
-      <MovieList />
-    </div>
     
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { mdbContainer, mdbRow, mdbCol } from 'mdbvue'
 import { VueperSlides, VueperSlide } from 'vueperslides'
 import 'vueperslides/dist/vueperslides.css'
-
-import MovieList from '@/components/movies/MovieList'
 
 export default {
   name: 'Home',
   components: {
-    MovieList,
-    mdbContainer,
-    mdbRow,
-    mdbCol,
-    VueperSlide,
-    VueperSlides,
+    'vueper-slide': VueperSlide,
+    'vueper-slides': VueperSlides,
   },
   data: function () {
     return {
       parallax: 1,
+      parallaxFixedContent: false
     }
   },
   computed: {

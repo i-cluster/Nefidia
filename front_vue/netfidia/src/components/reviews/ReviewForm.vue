@@ -69,12 +69,12 @@ export default {
           this.setToken().then(res => {
             if (!this.id) {
               // 글 작성
-              axios.post(`${SERVER_URL}/reviews/create/${this.movieId}`, this.review, { headers: res.token})
-              .then(res => this.$emit('new-review', res.data))
-              .catch(err => console.log(err))
+              axios.post(`${SERVER_URL}/reviews/create/${this.movieId}/`, this.review, { headers: res.token })
+                .then(res => this.$emit('new-review', res.data))
+                .catch(err => console.log(err))
             } else {
               // 글 수정
-              axios.put(`${SERVER_URL}/reviews/edit/${this.id}`, this.review, { headers: res.token})
+              axios.put(`${SERVER_URL}/reviews/edit/${this.id}/`, this.review, { headers: res.token})
               .then(res => this.$emit('edit-review', res.data))
               .catch(err => console.log(err))
             }

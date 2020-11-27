@@ -47,7 +47,11 @@
 </template>
 
 <script>
+// import axios from 'axios'
+
 import { mdbDropdown, mdbDropdownToggle, mdbDropdownMenu, mdbDropdownItem, mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbNavItem } from 'mdbvue';
+
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: 'App',

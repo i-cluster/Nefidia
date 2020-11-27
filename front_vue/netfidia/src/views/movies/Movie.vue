@@ -16,7 +16,8 @@
               @new-review="newReview"
               @edit-review="editReview"
             /><br><hr>
-            <ReviewList :reviews="reviews" />
+            <!-- {{ movie.reviews }} -->
+            <ReviewList :reviews="reviews" :currentUser="currentUser" />
           </div>
         </mdb-col>
       </mdb-row>
@@ -41,9 +42,9 @@ export default {
     MovieDetail,
     ReviewForm,
     ReviewList,
-    mdbContainer,
-    mdbRow,
-    mdbCol,
+    'mdb-container': mdbContainer,
+    'mdb-row': mdbRow,
+    'mdb-col': mdbCol,
   },
   data: function () {
     return {
@@ -93,6 +94,8 @@ export default {
           })
           .catch(err => console.log(err))
       })
+
+      this.getUser().then(res => this.currentUser = res)
     } else {
       this.$router.push({ name: 'Login' })
     }

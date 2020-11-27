@@ -78,8 +78,18 @@
 </template>
 
 <script>
+import { VueperSlides, VueperSlide } from 'vueperslides'
+import { mdbContainer, mdbRow, mdbCol } from 'mdbvue';
+
 export default {
   name: 'MovieDetail',
+  components: {
+    'mdb-container': mdbContainer,
+    'mdb-row': mdbRow,
+    'mdb-col': mdbCol,
+    'vueper-slide': VueperSlide,
+    'vueper-slides': VueperSlides,
+  },
   props: {
     movie: {
       type: Object

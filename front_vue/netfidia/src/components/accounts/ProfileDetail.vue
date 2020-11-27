@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+
   </div>
 </template>
 
@@ -8,6 +8,9 @@
 
 export default {
   name: 'ProfileDetail',
+  created: function () {
+    
+  }
 }
 </script>
 
