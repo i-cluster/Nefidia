@@ -1,8 +1,6 @@
 <template>
   <div id="reviewform">
     <h3>ReviewForm</h3>
-    <mdb-icon far icon="lightbulb" />
-    <mdb-icon icon="lightbulb" />
     <div style="width: 30vw; margin: 0 auto;">
       <select class="browser-default custom-select" v-model="vote">
         <option>Your vote is</option>
@@ -25,14 +23,13 @@
 <script>
 import axios from 'axios'
 import { mapActions } from 'vuex'
-import { mdbIcon, mdbInput, mdbBtn } from 'mdbvue'
+import { mdbInput, mdbBtn } from 'mdbvue'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: 'ReviewForm',
   components: {
-    mdbIcon,
     mdbInput,
     mdbBtn
   },

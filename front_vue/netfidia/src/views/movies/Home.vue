@@ -75,6 +75,10 @@ export default {
 </script>
 
 <style>
+* {
+  color: white;
+}
+
 #billboard {
   margin-bottom: 20px;
 }

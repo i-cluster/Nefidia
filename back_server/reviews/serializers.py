@@ -1,7 +1,6 @@
 from accounts.serializers import UserSerializer
 from rest_framework import serializers
-from rest_framework.utils import model_meta
-from .models import Genre, Review, Theme, Movie
+from .models import Comment, Genre, Review, Theme, Movie
 from rest_framework.relations import SlugRelatedField
 
 
@@ -19,13 +18,28 @@ class ThemeSerializer(serializers.ModelSerializer):
 		fields = ('name',)
 
 
+class CommentSerializer(serializers.ModelSerializer):
+	user = UserSerializer(read_only=True)
+
+	class Meta:
+		model = Comment
+		fields = '__all__'
+		read_only_fields = ('review',)
+
+
 class ReviewSerializer(serializers.ModelSerializer):
 	user = UserSerializer(read_only=True)
+	comments = CommentSerializer(many=True, read_only=True)
+	like_users = UserSerializer(many=True, read_only=True)
+	like_count = serializers.IntegerField(
+		source='like_users.count',
+		read_only=True
+	)
 
 	class Meta:
 		model = Review
 		fields = '__all__'
-		read_only_fields = ('movie', 'user',)
+		read_only_fields = ('movie', 'user', 'like_users')
 
 
 class MovieSerializer(serializers.ModelSerializer):

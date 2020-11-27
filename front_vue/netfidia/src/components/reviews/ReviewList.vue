@@ -2,24 +2,26 @@
   <div>
     <h3>ReviewList</h3>
     <hr>
-    <li v-for="(review, idx) in reviews" :key="idx">
-      작성자: {{ review.user.username }} |
-      평점 : {{ review.vote }} |
-      <span v-if="review.spoiler" @click="openSpoiler(review)">
-        <span v-text="spoiler"></span> |
-      </span>
-      <span v-else>
-        한줄평: {{ review.content }} |
-      </span>
-      좋아요 : {{ review.like_count }} |
-      <i :class="{fas: liked, far: !liked}" :ref="review.id" class="fa-paper-plane" @click="likeReview(review.id)"></i><br><br>
-      <!-- {{ review }} <br> -->
-      <!-- {{ review.like_users }} | -->
-      <CommentForm :reviewId="review.id" @new-comment="newComment" />
-      <br>
-      <CommentList :comments="review.comments" />
-      <hr>
-    </li>
+    <div style="width: 30vw; margin: 0 auto;">
+      <li v-for="(review, idx) in reviews" :key="idx">
+        작성자: {{ review.user.username }} |
+        평점 : {{ review.vote }} |
+        <span v-if="review.spoiler" @click="openSpoiler(review)">
+          <span v-text="spoiler"></span> |
+        </span>
+        <span v-else>
+          한줄평: {{ review.content }} |
+        </span>
+        좋아요 : {{ review.like_count }} |
+        <i :class="{fas: liked, far: !liked}" :ref="review.id" class="fa-paper-plane" @click="likeReview(review.id)"></i><br><br>
+        <!-- {{ review }} <br> -->
+        <!-- {{ review.like_users }} | -->
+        <CommentForm :reviewId="review.id" @new-comment="newComment" />
+        <br>
+        <CommentList :comments="review.comments" />
+        <hr>
+      </li>
+    </div>
   </div>
 </template>
 

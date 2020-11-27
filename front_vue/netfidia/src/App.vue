@@ -10,6 +10,7 @@
           <mdb-navbar-nav right>
             <mdb-nav-item href="#" active><router-link :to="{ name: 'Home' }">Home</router-link></mdb-nav-item>
             <mdb-nav-item href="#"><router-link :to="{ name: 'About' }">About</router-link></mdb-nav-item>
+            <mdb-nav-item href="#"><router-link :to="{ name: 'Logout' }">Logout</router-link></mdb-nav-item>
             <mdb-nav-item href="#"><router-link :to="{ name: 'Profile' }">Profile</router-link></mdb-nav-item>
             
             

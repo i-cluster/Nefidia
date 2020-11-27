@@ -1,3 +1,4 @@
+import re
 import requests
 import json
 from copy import deepcopy
@@ -11,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .models import Genre, Review, Theme, Movie
-from .serializers import GenreSerializer, ThemeSerializer, MovieSerializer, ReviewSerializer
+from .serializers import CommentSerializer, GenreSerializer, ThemeSerializer, MovieSerializer, ReviewSerializer
 
 # Create your views here.
 
@@ -38,8 +39,8 @@ def movie_register(request):
     themes = Theme.objects.all()
     theme_serializer = ThemeSerializer(themes, many=True)
     # api 영화 정보 받기
-    # filter_code = ['top_rated', 'upcoming', 'popular', 'now_playing', 'latest']
-    filter_code = ['top_rated']
+    filter_code = ['top_rated', 'upcoming', 'popular', 'now_playing']
+    # filter_code = ['top_rated']
     movies_db = {code: [] for code in filter_code}
 
     movies_ids = Movie.objects.values_list('unique_id', flat=True)
@@ -96,12 +97,17 @@ def movie_detail(request):
 
     reviews = movie.reviews.all()
     reviews_serializer = ReviewSerializer(reviews, many=True)
+    print(reviews.values())
 
     try:
         review = reviews.get(user=request.user)
         review_serializer = ReviewSerializer(review)
     except:
         review_serializer = ReviewSerializer()
+
+    user_like_reviews = request.user.like_reviews.all()
+    print(user_like_reviews)
+
 
     return Response({'movie': movie_serializer.data, 'reviews': reviews_serializer.data, 'user_review': review_serializer.data})
 
@@ -121,15 +127,48 @@ def create(request, movie_id):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def edit(request, review_id):
-    print(review_id)
     review = get_object_or_404(Review, pk=review_id)
-    print(review)
 
     if not request.user.reviews.filter(pk=review_id).exists():
         return Response({'detail': '권한이 없습니다.'})
     
     review_serializer = ReviewSerializer(review, data=request.data)
     if review_serializer.is_valid(raise_exception=True):
-        print(review_serializer)
         review_serializer.save()
         return Response(review_serializer.data)
+
+
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def comment_create(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    comment_serializer = CommentSerializer(data=request.data)
+    if comment_serializer.is_valid(raise_exception=True):
+        comment_serializer.save(review=review, user=request.user)
+    return Response(comment_serializer.data)
+
+
+@api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def like(request):
+    review_id = request.GET.get('reviewId')
+    review = get_object_or_404(Review, pk=review_id)
+    user = request.user
+    # print(review.like_users.all())
+
+    if review.like_users.filter(pk=user.pk).exists():
+        review.like_users.remove(user)
+        liked = False
+    else:
+        review.like_users.add(user)
+        liked = True
+    # print(review.like_users.all())
+
+    review_serializer = ReviewSerializer(review)
+    print(review_serializer.data.get('id'))
+    print(review_serializer.data.get('like_users'))
+    print(review_serializer.data.get('like_count'))
+
+    return Response({'review': review_serializer.data, 'liked': liked})
